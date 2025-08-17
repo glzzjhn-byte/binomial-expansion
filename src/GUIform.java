@@ -27,39 +27,46 @@ public class GUIform extends JFrame {
         outputArea.setEditable(false);
         add(new JScrollPane(outputArea), BorderLayout.CENTER);
 
+        // Make ENTER trigger calculateButton
+        getRootPane().setDefaultButton(calculateButton);
+
         // Button action
         calculateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String input = inputField.getText().trim();
-                try {
-                    String inside = input.substring(input.indexOf('(') + 1, input.indexOf(')'));
-                    boolean isMinus = inside.contains("-");
-                    String[] parts = inside.split(isMinus ? "-" : "\\+");
-                    long baseNumA = Long.parseLong(parts[0].trim());
-                    long baseNumB = Long.parseLong(parts[1].trim());
-                    int power = Integer.parseInt(input.substring(input.indexOf('^') + 1));
-
-                    String denotedResult, simplifiedResult, steps;
-                    if (isMinus) {
-                        denotedResult = BinomialExpansionMinus.expandAndDenote(baseNumA, baseNumB, power);
-                        simplifiedResult = BinomialExpansionMinus.calculateSimplifiedValue(baseNumA, baseNumB, power);
-                        steps = buildSteps(baseNumA, baseNumB, power, true);
-                    } else {
-                        denotedResult = BinomialExpansion.expandAndDenote(baseNumA, baseNumB, power);
-                        simplifiedResult = BinomialExpansion.calculateSimplifiedValue(baseNumA, baseNumB, power);
-                        steps = buildSteps(baseNumA, baseNumB, power, false);
-                    }
-
-                    outputArea.setText("Denotation: " + denotedResult + "\n\nSteps:\n" + steps + "\nSimplified Value: " + simplifiedResult);
-
-                } catch (Exception ex) {
-                    outputArea.setText("Invalid input format. Try again (e.g., (2+1)^2)");
-                }
+                calculateExpression();
             }
         });
 
         setVisible(true);
+    }
+
+    private void calculateExpression() {
+        String input = inputField.getText().trim();
+        try {
+            String inside = input.substring(input.indexOf('(') + 1, input.indexOf(')'));
+            boolean isMinus = inside.contains("-");
+            String[] parts = inside.split(isMinus ? "-" : "\\+");
+            long baseNumA = Long.parseLong(parts[0].trim());
+            long baseNumB = Long.parseLong(parts[1].trim());
+            int power = Integer.parseInt(input.substring(input.indexOf('^') + 1));
+
+            String denotedResult, simplifiedResult, steps;
+            if (isMinus) {
+                denotedResult = BinomialExpansionMinus.expandAndDenote(baseNumA, baseNumB, power);
+                simplifiedResult = BinomialExpansionMinus.calculateSimplifiedValue(baseNumA, baseNumB, power);
+                steps = buildSteps(baseNumA, baseNumB, power, true);
+            } else {
+                denotedResult = BinomialExpansion.expandAndDenote(baseNumA, baseNumB, power);
+                simplifiedResult = BinomialExpansion.calculateSimplifiedValue(baseNumA, baseNumB, power);
+                steps = buildSteps(baseNumA, baseNumB, power, false);
+            }
+
+            outputArea.setText("Denotation: " + denotedResult + "\n\nSteps:\n" + steps + "\nSimplified Value: " + simplifiedResult);
+
+        } catch (Exception ex) {
+            outputArea.setText("Invalid input format. Try again (e.g., (2+3)^4)");
+        }
     }
 
     private String buildSteps(long baseNumA, long baseNumB, int power, boolean isMinus) {
