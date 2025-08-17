@@ -1,15 +1,43 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import java.util.Scanner;
+
+
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner sc = new Scanner(System.in);
+        String denotedResult = "";
+        String simplifiedResult = "";
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (true) {
+            System.out.println("Enter expression like (a+b)^3 or (a-b)^3: ");
+            String input = sc.nextLine().trim();
+
+            try {
+                String inside = input.substring(input.indexOf('(') + 1, input.indexOf(')'));
+                boolean isMinus = inside.contains("-");
+                String[] parts = inside.split(isMinus ? "-" : "\\+");
+                long baseNumA = Long.parseLong(parts[0].trim());
+                long baseNumB = Long.parseLong(parts[1].trim());
+                int power = Integer.parseInt(input.substring(input.indexOf('^') + 1));
+
+                if (isMinus) {
+                    denotedResult = BinomialExpansionMinus.expandAndDenote(baseNumA, baseNumB, power);
+                    simplifiedResult = BinomialExpansionMinus.calculateSimplifiedValue(baseNumA, baseNumB, power);
+                } else {
+                    denotedResult = BinomialExpansion.expandAndDenote(baseNumA, baseNumB, power);
+                    simplifiedResult = BinomialExpansion.calculateSimplifiedValue(baseNumA, baseNumB, power);
+                }
+                break;
+
+            } catch (Exception e) {
+                System.out.println("Invalid input format. Please try again.");
+            }
         }
+
+        System.out.println("Denotation: " + denotedResult);
+        System.out.println("Simplified Value: " + simplifiedResult);
+
+        sc.close();
     }
 }
