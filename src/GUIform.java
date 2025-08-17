@@ -4,9 +4,9 @@ import java.awt.event.*;
 import java.util.List;
 
 public class GUIform extends JFrame {
-    private JTextField inputField;
-    private JTextArea outputArea;
-    private JButton calculateButton;
+    private final JTextField inputField;
+    private final JTextArea outputArea;
+    private final JButton calculateButton;
 
     public GUIform() {
         setTitle("Binomial Expansion Calculator");
