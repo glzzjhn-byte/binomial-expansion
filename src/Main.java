@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        new GUIform();
         Scanner sc = new Scanner(System.in);
         String denotedResult = "";
         String simplifiedResult = "";
