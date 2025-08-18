@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PascaLTriangleMethods:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PascaLTriangleMethods_jar</output-path>
+    <root id="archive" name="PascaLTriangleMethods.jar">
+      <element id="module-output" name="PascaLTriangleMethods" />
+    </root>
+  </artifact>
+</component>
